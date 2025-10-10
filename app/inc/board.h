@@ -57,12 +57,47 @@ extern "C" {
 #define STM32F407G_DISC1	(8)
 #define STM32F429I_DISC1	(9)
 
-#define BOARD (NUCLEO_F103RC)
+#define BOARD (NUCLEO_F103RB)
 
 /* STM32 Nucleo Boards - 32 Pins */
 #if (BOARD == NUCLEO_F303R8)
 
 #endif
+
+/* STM32 Nucleo Boards - 64 Pins */
+#if ((BOARD == NUCLEO_F103RB))
+
+#define BTN_A_PIN		B1_Pin
+#define BTN_A_PORT		B1_GPIO_Port
+#define BTN_A_PRESSED	GPIO_PIN_RESET
+#define BTN_A_HOVER		GPIO_PIN_SET
+
+#define LED_A_PIN		LD2_Pin
+#define LED_A_PORT		LD2_GPIO_Port
+#define LED_A_ON		GPIO_PIN_SET
+#define LED_A_OFF		GPIO_PIN_RESET
+
+// Probando pines y puertos
+#define LCD_D4_PIN     LCD_D4_Pin
+#define LCD_D4_PORT    GPIOB
+
+#define LCD_D5_PIN     LCD_D5_Pin
+#define LCD_D5_PORT    GPIOB
+
+#define LCD_D6_PIN     LCD_D6_Pin
+#define LCD_D6_PORT    GPIOB
+
+#define LCD_D7_PIN     LCD_D7_Pin
+#define LCD_D7_PORT    GPIOA
+
+#define LCD_RS_PIN     LCD_RS_Pin
+#define LCD_RS_PORT    GPIOA
+
+#define LCD_EN_PIN     LCD_E_Pin
+#define LCD_EN_PORT    GPIOA
+
+#endif
+
 
 /* STM32 Nucleo Boards - 64 Pins */
 #if ((BOARD == NUCLEO_F103RC) || (BOARD == NUCLEO_F401RE) || (BOARD == NUCLEO_F446RE))
