@@ -92,6 +92,7 @@ void app_init(void)
 {
 	uint32_t index;
 
+
 	/* Print out: Application Initialized */
 	LOGGER_INFO(" ");
 	LOGGER_INFO("%s is running - Tick [mS] = %lu", GET_NAME(app_init), HAL_GetTick());
