@@ -62,8 +62,6 @@
 #define DISPLAY_20x4_LINE3_FIRST_CHARACTER_ADDRESS 20
 #define DISPLAY_20x4_LINE4_FIRST_CHARACTER_ADDRESS 84
 
-#define DISPLAY_16x2_LINE1_FIRST_CHARACTER_ADDRESS 0x00
-#define DISPLAY_16x2_LINE2_FIRST_CHARACTER_ADDRESS 0x40
 
 #define DISPLAY_RS_INSTRUCTION 0
 #define DISPLAY_RS_DATA        1
@@ -129,13 +127,13 @@ void displayInit( displayConnection_t connection )
                       DISPLAY_IR_FUNCTION_SET |
                       DISPLAY_IR_FUNCTION_SET_8BITS );
 
-    systick_delay_us(DISPLAY_DEL_37US);
+    HAL_Delay( 1 );
 
     displayCodeWrite( DISPLAY_RS_INSTRUCTION,
                       DISPLAY_IR_FUNCTION_SET |
                       DISPLAY_IR_FUNCTION_SET_8BITS );
 
-    systick_delay_us(DISPLAY_DEL_37US);
+    HAL_Delay( 1 );
 
     switch( display.connection ) {
         case DISPLAY_CONNECTION_GPIO_8BITS:
@@ -144,14 +142,14 @@ void displayInit( displayConnection_t connection )
                               DISPLAY_IR_FUNCTION_SET_8BITS |
                               DISPLAY_IR_FUNCTION_SET_2LINES |
                               DISPLAY_IR_FUNCTION_SET_5x8DOTS );
-            systick_delay_us(DISPLAY_DEL_37US);
+            HAL_Delay( 1 );
         break;
 
         case DISPLAY_CONNECTION_GPIO_4BITS:
             displayCodeWrite( DISPLAY_RS_INSTRUCTION,
                               DISPLAY_IR_FUNCTION_SET |
                               DISPLAY_IR_FUNCTION_SET_4BITS );
-            systick_delay_us(DISPLAY_DEL_37US);
+            HAL_Delay( 1 );
             initial8BitCommunicationIsCompleted = true;
 
             displayCodeWrite( DISPLAY_RS_INSTRUCTION,
@@ -159,7 +157,7 @@ void displayInit( displayConnection_t connection )
                               DISPLAY_IR_FUNCTION_SET_4BITS |
                               DISPLAY_IR_FUNCTION_SET_2LINES |
                               DISPLAY_IR_FUNCTION_SET_5x8DOTS );
-            systick_delay_us(DISPLAY_DEL_37US);
+            HAL_Delay( 1 );
         break;
     }
 
@@ -168,24 +166,24 @@ void displayInit( displayConnection_t connection )
                       DISPLAY_IR_DISPLAY_CONTROL_DISPLAY_OFF |
                       DISPLAY_IR_DISPLAY_CONTROL_CURSOR_OFF |
                       DISPLAY_IR_DISPLAY_CONTROL_BLINK_OFF );
-    systick_delay_us(DISPLAY_DEL_37US);
+    HAL_Delay( 1 );
 
     displayCodeWrite( DISPLAY_RS_INSTRUCTION,
                       DISPLAY_IR_CLEAR_DISPLAY );
-    systick_delay_us(DISPLAY_DEL_37US);
+    HAL_Delay( 1 );
 
     displayCodeWrite( DISPLAY_RS_INSTRUCTION,
                       DISPLAY_IR_ENTRY_MODE_SET |
                       DISPLAY_IR_ENTRY_MODE_SET_INCREMENT |
                       DISPLAY_IR_ENTRY_MODE_SET_NO_SHIFT );
-    systick_delay_us(DISPLAY_DEL_37US);
+    HAL_Delay( 1 );
 
     displayCodeWrite( DISPLAY_RS_INSTRUCTION,
                       DISPLAY_IR_DISPLAY_CONTROL |
                       DISPLAY_IR_DISPLAY_CONTROL_DISPLAY_ON |
                       DISPLAY_IR_DISPLAY_CONTROL_CURSOR_OFF |
                       DISPLAY_IR_DISPLAY_CONTROL_BLINK_OFF );
-    systick_delay_us(DISPLAY_DEL_37US);
+    HAL_Delay( 1 );
 }
 
 
@@ -241,17 +239,17 @@ static void displayCodeWrite( bool type, uint8_t dataBus )
         displayPinWrite( DISPLAY_PIN_RS, DISPLAY_RS_INSTRUCTION );
 	else
         displayPinWrite( DISPLAY_PIN_RS, DISPLAY_RS_DATA );
+
     displayPinWrite( DISPLAY_PIN_RW, DISPLAY_RW_WRITE );
     displayDataBusWrite( dataBus );
 }
 
 static void displayPinWrite( uint8_t pinName, int value )
 {
-	GPIO_PinState pinState = (value == OFF) ? GPIO_PIN_RESET : GPIO_PIN_SET;
 	switch( display.connection ) {
 	        case DISPLAY_CONNECTION_GPIO_8BITS:
 	        	switch( pinName ) {
-	        		case DISPLAY_PIN_D0:
+	        		/*case DISPLAY_PIN_D0:
 						HAL_GPIO_WritePin(LCD_D0_PORT, LCD_D0_PIN, pinState);   break;
 					case DISPLAY_PIN_D1:
 						HAL_GPIO_WritePin(LCD_D1_PORT, LCD_D1_PIN, pinState);   break;
@@ -271,7 +269,7 @@ static void displayPinWrite( uint8_t pinName, int value )
 						HAL_GPIO_WritePin(LCD_RS_PORT, LCD_RS_PIN, pinState);   break;
 					case DISPLAY_PIN_EN:
 						HAL_GPIO_WritePin(LCD_EN_PORT, LCD_EN_PIN, pinState);   break;
-					case DISPLAY_PIN_RW: break;
+					case DISPLAY_PIN_RW: break;*/
 					default: break;
 				}
 				break;
@@ -279,124 +277,30 @@ static void displayPinWrite( uint8_t pinName, int value )
 	        case DISPLAY_CONNECTION_GPIO_4BITS:
 	            switch( pinName ) {
 	                case DISPLAY_PIN_D4:
-	                	HAL_GPIO_WritePin(LCD_D4_PORT, LCD_D4_PIN, pinState);   break;
+	                	HAL_GPIO_WritePin(LCD_D4_PORT, LCD_D4_PIN, (GPIO_PinState)value);
+	                	break;
 	                case DISPLAY_PIN_D5:
-						HAL_GPIO_WritePin(LCD_D5_PORT, LCD_D5_PIN, pinState);   break;
+						HAL_GPIO_WritePin(LCD_D5_PORT, LCD_D5_PIN, (GPIO_PinState)value);
+						break;
 	                case DISPLAY_PIN_D6:
-						HAL_GPIO_WritePin(LCD_D6_PORT, LCD_D6_PIN, pinState);   break;
+						HAL_GPIO_WritePin(LCD_D6_PORT, LCD_D6_PIN, (GPIO_PinState)value);
+						break;
 	                case DISPLAY_PIN_D7:
-						HAL_GPIO_WritePin(LCD_D7_PORT, LCD_D7_PIN, pinState);   break;
+						HAL_GPIO_WritePin(LCD_D7_PORT, LCD_D7_PIN, (GPIO_PinState)value);
+						break;
 	                case DISPLAY_PIN_RS:
-	                	HAL_GPIO_WritePin(LCD_RS_PORT, LCD_RS_PIN, pinState);   break;
+	                	HAL_GPIO_WritePin(LCD_RS_PORT, LCD_RS_PIN, (GPIO_PinState)value);
+	                	break;
 	                case DISPLAY_PIN_EN:
-	                	HAL_GPIO_WritePin(LCD_EN_PORT, LCD_EN_PIN, pinState);   break;
+	                	HAL_GPIO_WritePin(LCD_EN_PORT, LCD_EN_PIN, (GPIO_PinState)value);
+	                	break;
 	                case DISPLAY_PIN_RW: break;
 	                default: break;
 	            }
 	            break;
 	    }
 
-
 }
-/*
-static void displayPinWrite( uint8_t pinName, int value )
-{
-    GPIO_PinState pinState = (value == ON) ? GPIO_PIN_SET : GPIO_PIN_RESET;
-
-
-
-    switch( pinName ) {
-        case DISPLAY_PIN_D4:
-            HAL_GPIO_WritePin(LCD_D4_PORT, LCD_D4_PIN, pinState);
-            break;
-        case DISPLAY_PIN_D5:
-            HAL_GPIO_WritePin(LCD_D5_PORT, LCD_D5_PIN, pinState);
-            break;
-        case DISPLAY_PIN_D6:
-            HAL_GPIO_WritePin(LCD_D6_PORT, LCD_D6_PIN, pinState);
-            break;
-        case DISPLAY_PIN_D7:
-            HAL_GPIO_WritePin(LCD_D7_PORT, LCD_D7_PIN, pinState);
-            break;
-        case DISPLAY_PIN_RS:
-            HAL_GPIO_WritePin(LCD_RS_PORT, LCD_RS_PIN, pinState);
-            break;
-        case DISPLAY_PIN_EN:
-            HAL_GPIO_WritePin(LCD_EN_PORT, LCD_EN_PIN, pinState);
-            break;
-        default:
-            break;
-    }
-}
-*/
-/*
-// En display.c
-
-static void displayDataBusWrite( uint8_t dataBus )
-{
-    displayPinWrite( DISPLAY_PIN_EN, OFF );
-
-    // Escribir siempre el nibble superior (bits 7-4) en los pines D7-D4
-    displayPinWrite( DISPLAY_PIN_D7, (dataBus & 0b10000000) ? 1 : 0 );
-    displayPinWrite( DISPLAY_PIN_D6, (dataBus & 0b01000000) ? 1 : 0 );
-    displayPinWrite( DISPLAY_PIN_D5, (dataBus & 0b00100000) ? 1 : 0 );
-    displayPinWrite( DISPLAY_PIN_D4, (dataBus & 0b00010000) ? 1 : 0 );
-
-    if (display.connection == DISPLAY_CONNECTION_GPIO_8BITS)
-    {
-        // Si es 8-bits, escribir también el nibble inferior (bits 3-0)
-        displayPinWrite( DISPLAY_PIN_D3, (dataBus & 0b00001000) ? 1 : 0 );
-        displayPinWrite( DISPLAY_PIN_D2, (dataBus & 0b00000100) ? 1 : 0 );
-        displayPinWrite( DISPLAY_PIN_D1, (dataBus & 0b00000010) ? 1 : 0 );
-        displayPinWrite( DISPLAY_PIN_D0, (dataBus & 0b00000001) ? 1 : 0 );
-    }
-
-    // Si estamos en modo 4 bits, PERO AÚN NO terminamos la inicialización
-    // (que empieza en 8-bits), debemos hacer el pulso EN aquí.
-    if ( (display.connection == DISPLAY_CONNECTION_GPIO_4BITS) &&
-         (initial8BitCommunicationIsCompleted == false) )
-    {
-        displayPinWrite( DISPLAY_PIN_EN, ON );
-        systick_delay_us(DISPLAY_DEL_37US);
-        displayPinWrite( DISPLAY_PIN_EN, OFF );
-        systick_delay_us(DISPLAY_DEL_37US); // Espera después del pulso
-        return; // Salir de la función aquí
-    }
-
-    // Si estamos en modo 8 bits, hacer el pulso EN y salir.
-    if (display.connection == DISPLAY_CONNECTION_GPIO_8BITS)
-    {
-        displayPinWrite( DISPLAY_PIN_EN, ON );
-        systick_delay_us(DISPLAY_DEL_37US);
-        displayPinWrite( DISPLAY_PIN_EN, OFF );
-        systick_delay_us(DISPLAY_DEL_37US); // Espera después del pulso
-        return; // Salir
-    }
-
-    // --- A partir de aquí, solo se ejecuta en modo 4-bits REAL ---
-    // (initial8BitCommunicationIsCompleted es true)
-
-    // Hacer el pulso EN para el nibble superior
-    displayPinWrite( DISPLAY_PIN_EN, ON );
-    systick_delay_us(DISPLAY_DEL_37US);
-    displayPinWrite( DISPLAY_PIN_EN, OFF );
-    systick_delay_us(DISPLAY_DEL_37US); // Espera
-
-    // Escribir el nibble inferior (bits 3-0) en los pines D7-D4
-    displayPinWrite( DISPLAY_PIN_D7, (dataBus & 0b00001000) ? 1 : 0 );
-    displayPinWrite( DISPLAY_PIN_D6, (dataBus & 0b00000100) ? 1 : 0 );
-    displayPinWrite( DISPLAY_PIN_D5, (dataBus & 0b00000010) ? 1 : 0 );
-    displayPinWrite( DISPLAY_PIN_D4, (dataBus & 0b00000001) ? 1 : 0 );
-
-    // Hacer el pulso EN para el nibble inferior
-    displayPinWrite( DISPLAY_PIN_EN, ON );
-    systick_delay_us(DISPLAY_DEL_37US);
-    displayPinWrite( DISPLAY_PIN_EN, OFF );
-    systick_delay_us(DISPLAY_DEL_37US); // Espera después del pulso
-}
-*/
-
-
 
 
 static void displayDataBusWrite( uint8_t dataBus )

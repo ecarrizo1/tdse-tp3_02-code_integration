@@ -46,7 +46,7 @@ extern "C" {
 /********************** inclusions *******************************************/
 
 /********************** macros ***********************************************/
-#define NUCLEO_F103RC		(0)
+#define NUCLEO_F103RB		(0)
 #define NUCLEO_F303R8		(1)
 #define NUCLEO_F401RE		(2)
 #define NUCLEO_F446RE		(3)
@@ -66,7 +66,7 @@ extern "C" {
 
 
 /* STM32 Nucleo Boards - 64 Pins */
-#if ((BOARD == NUCLEO_F103RC) || (BOARD == NUCLEO_F401RE) || (BOARD == NUCLEO_F446RE))
+#if ((BOARD == NUCLEO_F103RB) || (BOARD == NUCLEO_F401RE) || (BOARD == NUCLEO_F446RE))
 
 #define BTN_A_PIN		B1_Pin
 #define BTN_A_PORT		B1_GPIO_Port
@@ -77,18 +77,6 @@ extern "C" {
 #define LED_A_PORT		LD2_GPIO_Port
 #define LED_A_ON		GPIO_PIN_SET
 #define LED_A_OFF		GPIO_PIN_RESET
-
-#define LCD_D0_PIN     LCD_D0_Pin
-#define LCD_D0_PORT    LCD_D0_GPIO_Port
-
-#define LCD_D1_PIN     LCD_D1_Pin
-#define LCD_D1_PORT    LCD_D1_GPIO_Port
-
-#define LCD_D2_PIN     LCD_D2_Pin
-#define LCD_D2_PORT    LCD_D2_GPIO_Port
-
-#define LCD_D3_PIN     LCD_D3_Pin
-#define LCD_D3_PORT    LCD_D3_GPIO_Port
 
 #define LCD_D4_PIN     LCD_D4_Pin
 #define LCD_D4_PORT    LCD_D4_GPIO_Port

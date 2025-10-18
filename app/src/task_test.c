@@ -97,7 +97,7 @@ void task_test_init(void *parameters)
 	/* Init & Print out: LCD Display */
 	displayInit( DISPLAY_CONNECTION_GPIO_4BITS );
 
-    displayCharPositionWrite(5, 0);
+    displayCharPositionWrite(0, 0);
 	displayStringWrite("TdSE Bienvenidos");
 
 	displayCharPositionWrite(0, 1);
